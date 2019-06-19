@@ -168,9 +168,10 @@ class Controller(object):
 
             brows.ping()
             brows.scan()
-            brows.done()
 
         except (AttributeError, BrowserError, ReporterError, TplError) as error:
             raise SrcError(error)
         except (KeyboardInterrupt, SystemExit):
             tpl.cancel(key='abort')
+        finally:
+            brows.done()

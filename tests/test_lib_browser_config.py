@@ -101,5 +101,11 @@ class TestBrowserConfig(unittest.TestCase):
         self.assertIs(type(Config.accept_cookies), property)
         self.assertFalse(empty_config.accept_cookies)
 
+        self.assertIs(type(Config.header), property)
+        self.assertTrue('' is empty_config.header)
+
+        self.assertIs(type(Config.cookie), property)
+        self.assertTrue('' is empty_config.cookie)
+
 if __name__ == "__main__":
     unittest.main()

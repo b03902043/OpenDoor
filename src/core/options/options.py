@@ -193,6 +193,24 @@ class Options(object):
                 "type": bool
             },
             {
+                "group": "request",
+                "args": "-H",
+                "argl": "--header",
+                "default": False,
+                "action": "store",
+                "help": "Specify http header per request",
+                "type": str
+            },
+            {
+                "group": "request",
+                "args": None,
+                "argl": "--cookie",
+                "default": False,
+                "action": "store",
+                "help": "Specify http cookie per request",
+                "type": str
+            },
+            {
                 "group": "wordlist",
                 "args": None,
                 "argl": "--random-list",

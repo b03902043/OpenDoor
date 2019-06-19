@@ -67,6 +67,8 @@ class Config(object):
         self._is_ignore_extension_filter = False if params.get('ignore_extensions') is None else True
         self._user_agent = self.DEFAULT_USER_AGENT
         self._threads = self.DEFAULT_MIN_THREADS if params.get('threads') is None else params.get('threads')
+        self._header = params.get('header', '')
+        self._cookie = params.get('cookie', '')
         
     @property
     def scan(self):
@@ -426,3 +428,23 @@ class Config(object):
         """
 
         return self._accept_cookies
+
+    @property
+    def header(self):
+        """
+        Custom Request Header
+        :return: str
+        """
+
+        return self._header
+
+    @property
+    def cookie(self):
+        """
+        Custom Request Cookie
+        :return: str
+        """
+
+        return self._cookie
+
+

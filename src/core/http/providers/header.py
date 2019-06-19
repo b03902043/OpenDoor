@@ -37,6 +37,9 @@ class HeaderProvider(AcceptHeaderProvider):
 
         AcceptHeaderProvider.__init__(self)
 
+        # custom header
+        self.init_headers()
+
     @property
     def __user_agent(self):
         """
@@ -51,6 +54,18 @@ class HeaderProvider(AcceptHeaderProvider):
             user_agent = self.__cfg.user_agent
         return user_agent
 
+    def init_headers(self):
+        # --cookie "a=1&b=2"  ->  cookie: a=1; b=2;
+        if self.__cfg.cookie != '':
+            self.add_header('Cookie', self.__cfg.cookie.replace('&', '; ')+ ';')
+
+        # --header "X-Forwarded-For: 127.0.0.1\n"
+        for _h in self.__cfg.header.split("\\n"):
+            if ':' not in _h:
+                continue
+            key, value = _h.split(':', 1)
+            self.add_header(key.strip(), value.strip())
+
     def add_header(self, key, value):
         """
         Add custom header
@@ -64,6 +79,10 @@ class HeaderProvider(AcceptHeaderProvider):
 
         return self
 
+    def add_header_default(self, key, value):
+        if key not in self.__headers:
+            self.add_header(key, value)
+
     @property
     def _headers(self):
         """
@@ -71,13 +90,16 @@ class HeaderProvider(AcceptHeaderProvider):
         :return: dict headers
         """
 
-        self.add_header('Accept', self._accept)\
-            .add_header('Accept-Encoding', self._accept_encoding)\
-            .add_header('Accept-Language', self._accept_language)\
-            .add_header('Referer', ''.join([self.__cfg.scheme, self.__cfg.host]))\
-            .add_header('User-Agent', self.__user_agent)\
-            .add_header('Cache-Conrol', 'no-cache')\
-            .add_header('Connection', 'keep-alive')\
-            .add_header('Pragma', 'no-cache')
+        self.add_header_default('Accept', self._accept)
+        self.add_header_default('Accept-Encoding', self._accept_encoding)
+        self.add_header_default('Accept-Language', self._accept_language)
+        self.add_header_default('Referer', ''.join([self.__cfg.scheme, self.__cfg.host]))
+        self.add_header_default('User-Agent', self.__user_agent)
+        self.add_header_default('Cache-Conrol', 'no-cache')
+        self.add_header_default('Connection', 'keep-alive')
+        self.add_header_default('Pragma', 'no-cache')
+        if 'Cookie' in self.__headers:
+            __cookie = self.__headers.pop('Cookie')
+            self.add_header('Cookie', __cookie)
 
         return self.__headers

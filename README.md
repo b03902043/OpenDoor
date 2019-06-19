@@ -110,10 +110,10 @@ usage: opendoor.py [-h] [--host HOST] [-p PORT] [-m METHOD] [-t THREADS]
                    [--accept-cookies] [--debug DEBUG] [--tor]
                    [--torlist TORLIST] [--proxy PROXY] [-s SCAN] [-w WORDLIST]
                    [--reports REPORTS] [--reports-dir REPORTS_DIR]
-                   [--random-agent] [--random-list] [--prefix PREFIX]
-                   [-e EXTENSIONS] [-i IGNORE_EXTENSIONS] [--sniff SNIFF]
-                   [--update] [--version] [--examples] [--docs]
-                   [--wizard [WIZARD]]
+                   [--random-agent] [-H HEADER] [--cookie COOKIE]
+                   [--random-list] [--prefix PREFIX] [-e EXTENSIONS]
+                   [-i IGNORE_EXTENSIONS] [--sniff SNIFF] [--update]
+                   [--version] [--examples] [--docs] [--wizard [WIZARD]]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -150,6 +150,9 @@ Request tools:
   --torlist TORLIST     Path to custom proxylist
   --proxy PROXY         Custom permanent proxy server
   --random-agent        Randomize user-agent per request
+  -H HEADER, --header HEADER
+                        Specify http header per request
+  --cookie COOKIE       Specify http cookie per request
 
 Sniff tools:
   --sniff SNIFF         Response sniff plugins

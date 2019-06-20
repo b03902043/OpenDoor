@@ -24,3 +24,4 @@ from .indexof import IndexofResponsePlugin as indexof
 from .skipempty import SkipemptyResponsePlugin as skipempty
 # noinspection PyPep8Naming
 from .file import FileResponsePlugin as file
+from .real200 import Real200ResponsePlugin as real200

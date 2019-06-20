@@ -44,6 +44,12 @@ class Debug(DebugProvider):
         if 0 < self.__level:
             tpl.debug(key='debug', level=self.__cfg.debug, method=self.__cfg.method)
 
+        self.basic_status = dict((_, None) for _ in ['success', 'file', 'bad', 'forbidden', 'redirect', 'indexof', 'certificat', 'auth'])
+        self.sniff_status = dict((_, None) for _ in self.__cfg.sniffers)
+        self.spec_status = dict()
+        self.spec_status.update(self.basic_status)
+        self.spec_status.update(self.sniff_status)
+
     @property
     def level(self):
         """
@@ -174,11 +180,12 @@ class Debug(DebugProvider):
         elif status in ['redirect']:
             request_uri = tpl.line(key='redirect', color='blue', url=urlpath,
                                    rurl=kwargs.get('redirect_uri'))
+        elif status in self.sniff_status:
+            request_uri = tpl.line(key=status, color='cyan', url=urlpath)
 
         self.__clear = True if self.__catched else False
 
-        if status in ['success', 'file', 'bad', 'forbidden', 'redirect', 'indexof', 'certificat', 'auth']:
-
+        if status in self.spec_status:
             with threading.Lock():
                 sys.writels("", flush=True)
                 tpl.info(key='get_item',

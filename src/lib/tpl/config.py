@@ -71,5 +71,6 @@ class Config(object):
         'indexof': 'Index {url}',
         'forbidden': 'Denied {url}',
         'auth': 'Auth {url}',
-        'redirect': 'R {url} -> {rurl}'
+        'redirect': 'R {url} -> {rurl}',
+        'real200': 'Real200 {url}'
     }

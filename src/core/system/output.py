@@ -20,6 +20,10 @@ import sys
 import platform
 import os
 
+def output(msg, flush=False):
+    sys.stdout.write(msg)
+    if True is flush:
+        sys.stdout.flush()
 
 class Output(object):
 
@@ -46,9 +50,7 @@ class Output(object):
         :return: None
         """
 
-        sys.stdout.write("\r\x1b[K" + msg.__str__())
-        if True is flush:
-            sys.stdout.flush()
+        output("\r\x1b[K" + msg.__str__(), flush)
 
     @staticmethod
     def writeln(msg):
@@ -58,7 +60,7 @@ class Output(object):
         :return: None
         """
 
-        sys.stdout.write('{0}\n'.format(msg))
+        output('{0}\n'.format(msg))
 
     @staticmethod
     def version():

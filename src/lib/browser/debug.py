@@ -16,6 +16,8 @@
     Development Team: Stanislav WEB
 """
 
+import threading
+
 from src.core import helper
 from src.core import sys
 from src.core.http.providers.debug import DebugProvider
@@ -177,24 +179,26 @@ class Debug(DebugProvider):
 
         if status in ['success', 'file', 'bad', 'forbidden', 'redirect', 'indexof', 'certificat', 'auth']:
 
-            sys.writels("", flush=True)
-            tpl.info(key='get_item',
-                     clear=self.__clear,
-                     percent=percentage,
-                     current='{0:0{l}d}'.format(kwargs.get('items_size', 0), l=total_len),
-                     total=kwargs.get('total_size', 1),
-                     item=request_uri,
-                     size=kwargs.get('content_size')
-                     )
-            self.__catched = True
-        else:
-            tpl.line_log(key='get_item',
+            with threading.Lock():
+                sys.writels("", flush=True)
+                tpl.info(key='get_item',
+                         clear=self.__clear,
                          percent=percentage,
                          current='{0:0{l}d}'.format(kwargs.get('items_size', 0), l=total_len),
                          total=kwargs.get('total_size', 1),
                          item=request_uri,
-                         size=kwargs.get('content_size'),
+                         size=kwargs.get('content_size')
                          )
+            self.__catched = True
+        else:
+            with threading.Lock():
+                tpl.line_log(key='get_item',
+                             percent=percentage,
+                             current='{0:0{l}d}'.format(kwargs.get('items_size', 0), l=total_len),
+                             total=kwargs.get('total_size', 1),
+                             item=request_uri,
+                             size=kwargs.get('content_size'),
+                             )
             self.__catched = False
             if kwargs.get('items_size', 0) is kwargs.get('total_size', 1):
                 sys.writels("", flush=True)

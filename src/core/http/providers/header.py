@@ -96,7 +96,7 @@ class HeaderProvider(AcceptHeaderProvider):
         self.add_header_default('Referer', ''.join([self.__cfg.scheme, self.__cfg.host]))
         self.add_header_default('User-Agent', self.__user_agent)
         self.add_header_default('Cache-Conrol', 'no-cache')
-        self.add_header_default('Connection', 'keep-alive')
+        self.add_header_default('Connection', 'close')
         self.add_header_default('Pragma', 'no-cache')
         if 'Cookie' in self.__headers:
             __cookie = self.__headers.pop('Cookie')

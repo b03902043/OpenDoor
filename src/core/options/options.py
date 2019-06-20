@@ -225,7 +225,16 @@ class Options(object):
                 "argl": "--prefix",
                 "default": None,
                 "action": "store",
-                "help": "Append path prefix to scan host",
+                "help": "Append path prefix to scan host ex. <host><prefix><wordlist><suffix>",
+                "type": str
+            },
+            {
+                "group": "wordlist",
+                "args": None,
+                "argl": "--suffix",
+                "default": None,
+                "action": "store",
+                "help": "Append path suffix to scan payload ex. <host><prefix><wordlist><suffix>",
                 "type": str
             },
             {

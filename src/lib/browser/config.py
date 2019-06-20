@@ -69,6 +69,7 @@ class Config(object):
         self._threads = self.DEFAULT_MIN_THREADS if params.get('threads') is None else params.get('threads')
         self._header = params.get('header', '')
         self._cookie = params.get('cookie', '')
+        self._suffix = params.get('suffix', '')
         
     @property
     def scan(self):
@@ -114,6 +115,15 @@ class Config(object):
         """
 
         return self._prefix.lstrip("/")
+
+    @property
+    def suffix(self):
+        """
+        Paths suffix
+        :return: str
+        """
+
+        return self._suffix
 
     @property
     def host(self):

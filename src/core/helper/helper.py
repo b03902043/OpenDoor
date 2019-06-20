@@ -21,7 +21,7 @@ import collections
 import json
 import re
 import webbrowser
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 from distutils.version import LooseVersion
 
 
@@ -57,7 +57,12 @@ class Helper(object):
         :return: dict
         """
 
-        return urlparse(url)
+        # for ascii >= 128
+        #url = ''.join(map(lambda x: '%{:02x}'.format(ord(x)) if ord(x) >= 128 else x, url))
+        pobj = urlparse(url)
+        pobj = pobj._replace(path=quote(pobj.path+pobj.fragment))
+
+        return pobj
 
     @staticmethod
     def to_json(data, sort=True, indents=4):

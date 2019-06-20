@@ -18,6 +18,7 @@
 
 import threading
 import time
+import traceback
 from queue import Empty as QueueEmptyError
 from threading import BoundedSemaphore, Event
 
@@ -91,7 +92,8 @@ class Worker(threading.Thread):
                         self.__semaphore.release()
                         self.__event.wait()
         except Exception as error:
-            self.terminate(str(error))
+            self.terminate("\n" + traceback.format_exc())
+            #self.terminate(str(error))
 
     def __process(self):
         """

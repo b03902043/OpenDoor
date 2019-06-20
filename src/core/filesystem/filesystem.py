@@ -21,6 +21,7 @@ import errno
 import os
 import random
 import re
+from itertools import takewhile, repeat
 
 from .exceptions import FileSystemError
 
@@ -225,17 +226,19 @@ class FileSystem(object):
             if not os.access(filepath, os.R_OK):
                 raise FileSystemError("Configuration file {0} can not be read. Setup chmod 0644".format(filepath))
 
-        lines = []
-        with open(filepath) as f_handler:
-            for line in f_handler:
-                lines.append(handler(line, handler_params))
-            loader(lines)
+        #lines = []
+        with open(filepath, 'rb') as f_handler:
+            #for line in f_handler:
+            #    lines.append(handler(line, handler_params))
+            #loader(lines)
+            loader(f_handler, handler, handler_params)
 
     @staticmethod
-    def read(filename):
+    def read(filename, count=False):
         """
         Read .txt file
         :param str filename: input filename
+        :count bool flag: count line only?
         :raise FileSystemError
         :return: list
         """
@@ -246,6 +249,9 @@ class FileSystem(object):
             raise FileSystemError("{0} is not a file ".format(filename))
         if not os.access(filepath, os.R_OK):
             raise FileSystemError("Configuration file {0} can not be read. Setup chmod 0644".format(filepath))
+
+        if count:
+            return FileSystem.rawincount(filename)
 
         with open(filepath) as f_handler:
             data = f_handler.readlines()
@@ -317,3 +323,9 @@ class FileSystem(object):
             size /= 1024
 
         return "%.*f%s" % (precision, size, suffixes[suffix_index])
+
+    @staticmethod
+    def rawincount(filename):
+        f = open(filename, 'rb')
+        bufgen = takewhile(lambda x: x, (f.raw.read(1024*1024) for _ in repeat(None)))
+        return sum( buf.count(b'\n') for buf in bufgen )

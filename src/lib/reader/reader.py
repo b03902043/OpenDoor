@@ -174,6 +174,8 @@ class Reader(object):
 
         if 'prefix' in self.__browser_config and 0 < len(self.__browser_config.get('prefix')):
             line = self.__browser_config.get('prefix') + line
+        if 'suffix' in self.__browser_config and 0 < len(self.__browser_config.get('suffix')):
+            line = line + self.__browser_config.get('suffix')
         port = params.get('port')
 
         if port is Config.ssl_port or port is Config.http_port:
@@ -182,7 +184,6 @@ class Reader(object):
             port = ':{0}'.format(port)
         line = "{scheme}{host}{port}/{uri}".format(scheme=params.get('scheme'), host=params.get('host'), port=port,
                                                    uri=line, )
-
         return line
 
     def randomize_list(self, target, output):
@@ -273,7 +274,7 @@ class Reader(object):
                     dirlist = self.__browser_config.get('wordlist')
                 else:
                     dirlist = self.__config.get(self.__browser_config.get('list'))
-                self.__counter = len(filesystem.read(dirlist))
+                self.__counter = filesystem.read(dirlist, count=True)
 
             return self.__counter
 

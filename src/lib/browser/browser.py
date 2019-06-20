@@ -60,7 +60,8 @@ class Browser(Filter):
                 'wordlist': self.__config.wordlist,
                 'is_standalone_proxy': self.__config.is_standalone_proxy,
                 'is_external_torlist': self.__config.is_external_torlist,
-                'prefix': self.__config.prefix
+                'prefix': self.__config.prefix,
+                'suffix': self.__config.suffix
             })
 
             if True is self.__config.is_external_reports_dir:
@@ -196,10 +197,12 @@ class Browser(Filter):
         path = helper.parse_url(url).path.strip("/")
         return path in self.__reader.get_ignored_list()
 
-    def _add_urls(self, urllist):
+    def _add_urls(self, urllist, handle, handle_params):
         """
         Add received urllist to threadpool
-        :param dict urllist: read from dictionary
+        :param iterable urllist: read from dictionary
+        :param func handle: process url
+        :param func handle_params: parameter used to process url
         :raise KeyboardInterrupt
         :return: None
         """
@@ -207,6 +210,8 @@ class Browser(Filter):
         try:
 
             for url in urllist:
+                url = ''.join(map(chr, url)).rstrip('\n').rstrip('\r')
+                url = handle(url, handle_params)
                 if False is self.__is_ignored(url):
                     self.__pool.add(self.__http_request, url)
                 else:

@@ -111,9 +111,10 @@ usage: opendoor.py [-h] [--host HOST] [-p PORT] [-m METHOD] [-t THREADS]
                    [--torlist TORLIST] [--proxy PROXY] [-s SCAN] [-w WORDLIST]
                    [--reports REPORTS] [--reports-dir REPORTS_DIR]
                    [--random-agent] [-H HEADER] [--cookie COOKIE]
-                   [--random-list] [--prefix PREFIX] [-e EXTENSIONS]
-                   [-i IGNORE_EXTENSIONS] [--sniff SNIFF] [--update]
-                   [--version] [--examples] [--docs] [--wizard [WIZARD]]
+                   [--random-list] [--prefix PREFIX] [--suffix SUFFIX]
+                   [-e EXTENSIONS] [-i IGNORE_EXTENSIONS] [--sniff SNIFF]
+                   [--update] [--version] [--examples] [--docs]
+                   [--wizard [WIZARD]]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -168,6 +169,9 @@ Wordlist tools:
                         Path to custom wordlist
   --random-list         Shuffle scan list
   --prefix PREFIX       Append path prefix to scan host
+                        <host><prefix><wordlist><suffix>
+  --suffix SUFFIX       Append path suffix to scan payload ex.
+                        <host><prefix><wordlist><suffix>
   -e EXTENSIONS, --extensions EXTENSIONS
                         Force use selected extensions for scan session -e
                         php,json e.g

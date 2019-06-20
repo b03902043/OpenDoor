@@ -61,15 +61,16 @@ class Config(object):
         self._is_tor = params.get('tor')
         self._torlist = '' if 'torlist' not in params else params.get('torlist')
         self._is_random_user_agent = params.get('random_agent')
-        self._sniff = params.get('sniff')
+        self._sniff = params.get('sniff', list())
         self._is_random_list = False if params.get('random_list') is None else True
         self._is_extension_filter = False if params.get('extensions') is None else True
         self._is_ignore_extension_filter = False if params.get('ignore_extensions') is None else True
         self._user_agent = self.DEFAULT_USER_AGENT
         self._threads = self.DEFAULT_MIN_THREADS if params.get('threads') is None else params.get('threads')
-        self._header = params.get('header', '')
+        self._header = params.get('header', list())
         self._cookie = params.get('cookie', '')
         self._suffix = params.get('suffix', '')
+        self._path = params.get('path', '')
         
     @property
     def scan(self):
@@ -240,12 +241,7 @@ class Config(object):
         :return: bool
         """
 
-        if None is not self._sniff:
-            if False is isinstance(self._sniff, list):
-                self._sniff = self._sniff.split(",")
-            if 0 < len(self._sniff):
-                return True
-        return False
+        return len(self._sniff) > 0
 
     @property
     def sniffers(self):
@@ -254,6 +250,9 @@ class Config(object):
         :return: list
         """
 
+        if None is not self._sniff:
+            if False is isinstance(self._sniff, list):
+                self._sniff = self._sniff.split(",")
         return self._sniff
 
     @property
@@ -456,5 +455,14 @@ class Config(object):
         """
 
         return self._cookie
+
+    @property
+    def path(self):
+        """
+        Custom Request Path
+        :return: str
+        """
+
+        return self._path
 
 

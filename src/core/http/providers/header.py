@@ -59,9 +59,9 @@ class HeaderProvider(AcceptHeaderProvider):
         if self.__cfg.cookie != '':
             self.add_header('Cookie', self.__cfg.cookie.replace('&', '; ')+ ';')
 
-        # --header "X-Forwarded-For: 127.0.0.1\n"
-        for _h in self.__cfg.header.split("\\n"):
-            if ':' not in _h:
+        # --header "X-Forwarded-For: 127.0.0.1" --header "Content-Type: image/jpeg"
+        for _h in self.__cfg.header:
+            if ':' not in _h: # sanity check
                 continue
             key, value = _h.split(':', 1)
             self.add_header(key.strip(), value.strip())

@@ -162,15 +162,15 @@ class Reader(object):
 
         return line
 
-    def _directories__line(self, line, params):
+    def _directories__line(self, word, params):
         """
         Read lines from directories file
-        :param str line: single line
+        :param str word: single line
         :param dict params: input params
         :return: str
         """
-
-        line = helper.filter_directory_string(line)
+        
+        line = helper.filter_directory_string(self.__browser_config['path'])
 
         if 'prefix' in self.__browser_config and 0 < len(self.__browser_config.get('prefix')):
             line = self.__browser_config.get('prefix') + line
@@ -184,6 +184,9 @@ class Reader(object):
             port = ':{0}'.format(port)
         line = "{scheme}{host}{port}/{uri}".format(scheme=params.get('scheme'), host=params.get('host'), port=port,
                                                    uri=line, )
+        for sub in filter(lambda x: x in line, ['FUZZ']):
+            line = line.replace('FUZZ', word)
+
         return line
 
     def randomize_list(self, target, output):

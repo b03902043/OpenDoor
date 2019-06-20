@@ -61,7 +61,8 @@ class Browser(Filter):
                 'is_standalone_proxy': self.__config.is_standalone_proxy,
                 'is_external_torlist': self.__config.is_external_torlist,
                 'prefix': self.__config.prefix,
-                'suffix': self.__config.suffix
+                'suffix': self.__config.suffix,
+                'path': self.__config.path
             })
 
             if True is self.__config.is_external_reports_dir:

@@ -196,8 +196,8 @@ class Options(object):
                 "group": "request",
                 "args": "-H",
                 "argl": "--header",
-                "default": False,
-                "action": "store",
+                "default": None,
+                "action": "append",
                 "help": "Specify http header per request",
                 "type": str
             },
@@ -205,7 +205,7 @@ class Options(object):
                 "group": "request",
                 "args": None,
                 "argl": "--cookie",
-                "default": False,
+                "default": None,
                 "action": "store",
                 "help": "Specify http cookie per request",
                 "type": str
@@ -218,6 +218,19 @@ class Options(object):
                 "action": "store_true",
                 "help": "Shuffle scan list",
                 "type": bool
+            },
+            {
+                "group": "wordlist",
+                "args": "-P",
+                "argl": "--path",
+                "default": "FUZZ",
+                "action": "store",
+                "help": """ FUZZ template in URL 
+                    location: <prefix><path><suffix>
+                    path: index/FUZZ.asp -> index/<word>.asp
+                    be sure to use "FUZZ" keyword
+                    """,
+                "type": str
             },
             {
                 "group": "wordlist",

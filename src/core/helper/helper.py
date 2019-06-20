@@ -144,64 +144,63 @@ class Helper(object):
         return str(domain.encode("idna").decode("utf-8"))
 
     @staticmethod
-    def decode(str, errors='strict'):
+    def decode(s, errors='strict'):
         """
         Decode strings
 
-        :param str str: input string
+        :param str s: input string
         :param str errors:error level
-        :return: str
+        :return: s
         """
 
         output = ''
         try:
-            if len(str) < 3:
-                if codecs.BOM_UTF8.startswith(str):
+            if len(s) < 3:
+                if codecs.BOM_UTF8.startswith(s):
                     # not enough data to decide if this is a BOM
                     # => try again on the next call
                     output = ""
 
-            elif str[:3] == codecs.BOM_UTF8:
-                (output, sizes) = codecs.utf_8_decode(str[3:], errors)
-            elif str[:3] == codecs.BOM_UTF16:
-                output = str[3:].decode('utf16')
+            elif s[:3] == codecs.BOM_UTF8:
+                (output, sizes) = codecs.utf_8_decode(s[3:], errors)
+            elif s[:3] == codecs.BOM_UTF16:
+                output = s[3:].decode('utf16')
             else:
                 # (else) no BOM present
-                (output, sizes) = codecs.utf_8_decode(str, errors)
-            return str(output)
+                (output, sizes) = codecs.utf_8_decode(s, errors)
+            return s(output)
         except (UnicodeDecodeError, Exception):
             # seems, its getting not a content (images, file, etc)
             try:
-                return str.decode('cp1251')
+                return s.decode('cp1251')
             except (UnicodeDecodeError, Exception):
                 return ""
 
     @staticmethod
-    def filter_directory_string(str):
+    def filter_directory_string(s):
         """
         Filter directory string
 
-        :param str string: input string
+        :param str s: input string
         :return: str
         """
 
-        str = str.strip("\n")
-        if True is str.startswith('/'):
-            str = str[1:]
+        s = s.strip("\n")
+        s = s.lstrip("/")
 
-        return str.strip()
+        return s.strip()
 
     @staticmethod
-    def filter_domain_string(str):
+    def filter_domain_string(s):
         """
         Filter domain/subdomain string
 
-        :param str string: input string
+        :param str s: input string
         :return: str
         """
 
-        str.strip("\n")
-        str = re.sub(r'[^\w\d_-]', '', str).lower()
-        if not str:
-            str = '_'
-        return str.lower()
+        s.strip("\n")
+        s = re.sub(r'[^\w\d_-]', '', s).lower()
+        if not s:
+            s = '_'
+        return s.lower()

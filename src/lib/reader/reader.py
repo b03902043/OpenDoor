@@ -133,7 +133,6 @@ class Reader(object):
         except (TypeError, FileSystemError) as error:
             raise ReaderError(error)
 
-    @classmethod
     def _subdomains__line(cls, line, params):
         """
         Read lines from subdomains file
@@ -142,7 +141,8 @@ class Reader(object):
         :return: str
         """
 
-        line = helper.filter_domain_string(line)
+        #line = helper.filter_domain_string(cls.__browser_config['path'])
+        line = cls.__browser_config['path']
 
         host = params.get('host')
         port = params.get('port')
@@ -184,9 +184,6 @@ class Reader(object):
             port = ':{0}'.format(port)
         line = "{scheme}{host}{port}/{uri}".format(scheme=params.get('scheme'), host=params.get('host'), port=port,
                                                    uri=line, )
-        for sub in filter(lambda x: x in line, ['FUZZ']):
-            line = line.replace('FUZZ', word)
-
         return line
 
     def randomize_list(self, target, output):

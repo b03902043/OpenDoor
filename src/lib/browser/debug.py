@@ -181,7 +181,7 @@ class Debug(DebugProvider):
             request_uri = tpl.line(key='redirect', color='blue', url=urlpath,
                                    rurl=kwargs.get('redirect_uri'))
         elif status in self.sniff_status:
-            request_uri = tpl.line(key=status, color='cyan', url=urlpath)
+            request_uri = tpl.line(key=status, color='cyan', url=urlpath, default=status+' {url}')
 
         self.__clear = True if self.__catched else False
 

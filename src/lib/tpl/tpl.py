@@ -94,7 +94,7 @@ class Tpl(object):
             raise TplError(error)
 
     @staticmethod
-    def line(msg='', key='', color='white', **args):
+    def line(msg='', key='', color='white', default='', **args):
         """
         Stored colored line to variable
         :param str msg: text message
@@ -107,7 +107,7 @@ class Tpl(object):
 
         try:
             if key:
-                msg = Tpl.__format_message(key, args=args)
+                msg = Tpl.__format_message(key, default=default, args=args)
             return colour.colored(msg, color=color)
         except (AttributeError, TplError) as error:
             raise TplError(error)
@@ -211,7 +211,7 @@ class Tpl(object):
             raise TplError(error)
 
     @staticmethod
-    def __format_message(key, **args):
+    def __format_message(key, default='', **args):
         """
         Format message from config key
         :param str key: message
@@ -221,10 +221,13 @@ class Tpl(object):
         :return: str
         """
 
-        tpl = getattr(Config, 'templates')
-        if key not in tpl:
-            raise TplError('Could not find tpl option `{0}`'.format(key))
-        msg = tpl[key]
+        if default:
+            msg = default
+        else:
+            tpl = getattr(Config, 'templates')
+            if key not in tpl:
+                raise TplError('Could not find tpl option `{0}`'.format(key))
+            msg = tpl[key]
 
         args = args.get('args')
         if not len(args):

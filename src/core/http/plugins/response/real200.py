@@ -24,7 +24,7 @@ class Real200ResponsePlugin(ResponsePluginProvider):
     """ Real200ResponsePlugin class"""
 
     DESCRIPTION = 'Custom 404 (detect custom 404 pages)'
-    RESPONSE_INDEX = 'real200'
+    RESPONSE_INDEX = 'real200' # must be coherent within src/core/http/plugins/response/__init__.py
     DEFAULT_STATUSES = [200, 201, 202, 203, 204, 205, 206, 207, 208]
 
     def __init__(self):
@@ -37,13 +37,16 @@ class Real200ResponsePlugin(ResponsePluginProvider):
     def process(self, response):
         """
         Process data
+        :param urllib3.response.HTTPResponse response
         :return: str
         """
 
+        # ===============  MODIFY HERE  ==================
         if response.status in self.DEFAULT_STATUSES:
             super().process(response)
-
-            # vars:   _body
-            if 0 < len(self._body) and self._status in self.DEFAULT_STATUSES:
-                if not 'Not Found' in self._body:   return self.RESPONSE_INDEX
+            # Parsed Vars:  _body
+            if 0 < len(self._body):
+                if not 'Not Found' in self._body:
+                    return self.RESPONSE_INDEX
+        # ================================================
         return "404" # None == pass to another sniffer. see src/core/http/providers/response.py for detailed 

@@ -28,6 +28,7 @@ from src.lib.reader import Reader, ReaderError
 from src.lib.reporter import Reporter, ReporterError
 # noinspection PyPep8Naming
 from src.lib.tpl import Tpl as tpl
+from src.lib.aux import Aux as aux
 from .config import Config
 from .debug import Debug
 from .exceptions import BrowserError
@@ -210,9 +211,9 @@ class Browser(Filter):
 
         try:
 
-            for url in urllist:
-                url = ''.join(map(chr, url)).rstrip('\n').rstrip('\r')
-                url = handle(url, handle_params)
+            for url in aux.generate(urllist, handle=handle, handle_params=handle_params):
+                #url = ''.join(map(chr, url)).rstrip('\n').rstrip('\r')
+                #url = handle(url, handle_params) # src/lib/reader/reader.py _directories__line
                 if False is self.__is_ignored(url):
                     self.__pool.add(self.__http_request, url)
                 else:

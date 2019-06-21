@@ -199,7 +199,7 @@ class Helper(object):
         :return: str
         """
 
-        s.strip("\n")
+        s = s.strip('\n')
         s = re.sub(r'[^\w\d_-]', '', s).lower()
         if not s:
             s = '_'

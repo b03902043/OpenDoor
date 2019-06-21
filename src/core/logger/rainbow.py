@@ -105,7 +105,8 @@ class RainbowLoggingHandler(ColorizingStreamHandler):
         length = width - pure_length
         if record.levelno != logging.DEBUG:
             if pure_length > width and record.levelno != logging.ERROR:
-                output = (output[:width] + '...')
+                #output = (output[:width] + '...')
+                output = ('...' + output[-width:])
 
         end = (' ' * length)[:length]
         return output + end
